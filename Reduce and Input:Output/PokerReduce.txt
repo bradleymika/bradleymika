@@ -1,0 +1,31 @@
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+
+public class PokerReducer extends Reducer<Text, Text, Text, Text> {
+
+    protected void reduce(Text key, Iterable<Text> values, Context context)
+            throws IOException, InterruptedException {
+
+        // store all possible Poker cards
+        Set<String> allCards = new HashSet<>();
+        for (String rank : new String[]{"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"}) {
+            for (String suit : new String[]{"Hearts", "Diamonds", "Clubs", "Spades"}) {
+                allCards.add(rank + " of " + suit);
+            }
+        }
+
+        // remove cards that are present
+        for (Text value : values) {
+            String card = key.toString();
+            allCards.remove(card);
+        }
+
+        // missing cards as output
+        for (String missingCard : allCards) {
+            context.write(new Text(missingCard), new Text("Missing"));
+        }
+    }
+}
