@@ -1,4 +1,4 @@
-In the standalone Hadoop system you installed in HW4, do the following:
+Install a standalone Hadoop system, do the following:
 
 Create a text file that stores a deck of 52 different Poker cards in a random order (represent each card by both its rank and suit).
 Remove a random number of Poker cards from the above text file.
